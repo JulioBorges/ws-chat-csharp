@@ -1,4 +1,5 @@
 ﻿using System;
+using WSChat.Shared.Domain;
 
 namespace WSChat.Server
 {
@@ -6,7 +7,16 @@ namespace WSChat.Server
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Room room = new Room("ROOM");
+
+            room.SetMessageHandler(Console.WriteLine);
+
+            room.Connect();
+
+            
+            Console.Read();
+
+            room.Close();
         }
     }
 }
