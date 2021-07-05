@@ -19,8 +19,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\WSChat.Shared\WSChat.Shared.csproj" />
-  </ItemGroup>
-
 </Project>

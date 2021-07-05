@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "WSChat.Server": {
-      "commandName": "Project",
-      "commandLineArgs": "127.0.0.1 54500"
-    }
-  }
-}
