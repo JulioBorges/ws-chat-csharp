@@ -140,7 +140,6 @@ namespace WSChat.Server
                             HandleLog("User logout: " + session.Token);
                         }
                         break;
-
                     case MessageType.JoinRoom:
                         if (session.User.ActiveRoom != null)
                             throw new Exception("Its not possible to join in another room");
@@ -175,7 +174,6 @@ namespace WSChat.Server
                             SendMessage(messageSuccess, session.Client.Client);
                         }
                         break;
-
                     case MessageType.QuitRoom:
                         QuitRoom(session, message);
                         break;
@@ -183,12 +181,10 @@ namespace WSChat.Server
                         HandleLog($"{session.User.NickName} : message received : {message.Data}");
                         BroadcastToRoom(session, message.Data);
                         break;
-
                     case MessageType.SendPrivateMessage:
                         HandleLog($"{session.User.NickName} : private message received : {message.Data}");
                         SendToPrivate(session, msgData[0], msgData[1]);
                         break;
-
                     case MessageType.ListUsers:
                         string room = msgData[0];
 
@@ -202,7 +198,6 @@ namespace WSChat.Server
                         string listUsers = string.Join("\r\n", users);
                         messageListUsers.Data = listUsers;
                         SendMessage(messageListUsers, session.Client.Client);
-
                         break;
                 }
             }
@@ -283,7 +278,7 @@ namespace WSChat.Server
                 messageToSend.Data = formmatedMessage;
 
                 var sessionsFromRoom = _sessionManager.SessionList
-                    .Where(s => s.User.ActiveRoom != null &&
+                    .Where(s => s.User != null && s.User.ActiveRoom != null &&
                         s.User.ActiveRoom.Name == room.Name);
 
                 foreach (Session sessionUser in sessionsFromRoom)
@@ -303,16 +298,16 @@ namespace WSChat.Server
 
             if (room != null && message != "")
             {
-                MessageData messageToSend = new(MessageType.SendMessage);
+                MessageData messageToSend = new(MessageType.SendPrivateMessage);
                 string formmatedMessage = $"{session.User.NickName} *[sends private]: {message}";
                 messageToSend.Data = formmatedMessage;
 
-                var sessionsFromRoom = _sessionManager.SessionList
-                    .Where(s => s.User.ActiveRoom != null &&
+                var sessionFromUser = _sessionManager.SessionList
+                    .FirstOrDefault(s => s.User.ActiveRoom != null &&
                         s.User.ActiveRoom.Name == room.Name && s.User.NickName == user);
-
-                foreach (Session sessionUser in sessionsFromRoom)
-                    SendMessage(messageToSend, sessionUser.Client.Client);
+                
+                if (sessionFromUser != null)
+                    SendMessage(messageToSend, sessionFromUser.Client.Client);
 
                 HandleLog($"{session.User.NickName}'s message private to {user}");
             }

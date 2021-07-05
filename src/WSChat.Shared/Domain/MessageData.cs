@@ -8,15 +8,7 @@ namespace WSChat.Shared.Domain
 
         public string Data { get; set; }
 
-        public MessageData()
-        {
-        }
-
-        public MessageData(MessageType type, string data)
-        {
-            Type = type;
-            Data = data;
-        }
+        internal MessageData() { }
 
         public MessageData(MessageType type) => Type = type;
     }

@@ -8,6 +8,10 @@ namespace WSChat.Client
     {
         static void Main(string[] args)
         {
+            PrintLine();
+
+            Console.WriteLine(Console.CursorTop);
+
             const string title = "CHAT CLIENT";
 
             (string ip, int port) = ConsoleHelper.LoadOrShowConfigurationMenu(args);
@@ -23,19 +27,31 @@ namespace WSChat.Client
             bool registered = false;
             string nickName = GetNickName(chatClient, ref registered);
 
-            if (!JoinRoom(chatClient))
+            var room = JoinRoom(chatClient);
+            if (string.IsNullOrEmpty(room))
                 return;
 
             Thread.Sleep(250);
             Console.Clear();
 
             ConsoleHelper.PrintHeaderChat(ip, port, title);
-            
+            Console.WriteLine();
+            PrintLine();
+
+            Console.WriteLine($"*** User: {nickName} logged at room {room} ***");
+            Console.WriteLine("");
+
             ChatLoop(chatClient, nickName);
 
             Console.Read();
 
             chatClient.StopClient();
+        }
+
+        private static void PrintLine()
+        {
+            for (int i = 0; i < 50; i++)
+                Console.Write("*");
         }
 
         private static void ChatLoop(ChatClient chatClient, string nickName)
@@ -46,6 +62,8 @@ namespace WSChat.Client
             do
             {
                 message = Console.ReadLine();
+                
+                Console.CursorTop --;
 
                 if (message.StartsWith("/p"))
                 {
@@ -64,7 +82,7 @@ namespace WSChat.Client
             } while (message != "QUIT");
         }
 
-        private static bool JoinRoom(ChatClient chatClient)
+        private static string JoinRoom(ChatClient chatClient)
         {
             Console.WriteLine("Please type a room name to join.");
 
@@ -74,10 +92,10 @@ namespace WSChat.Client
             {
                 Console.WriteLine("Error when attempt to join or create room");
                 Console.Read();
-                return false;
+                return "";
             }
 
-            return true;
+            return room;
         }
 
         private static string GetNickName(ChatClient chatClient, ref bool registered)
@@ -111,7 +129,6 @@ namespace WSChat.Client
             chatClient.SetMessageHandler(msg =>
             {
                 Console.WriteLine(msg);
-                Console.Write(">");
             });
 
             chatClient.SetServer(ip, port);
