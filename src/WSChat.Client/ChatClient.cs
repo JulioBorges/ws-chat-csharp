@@ -91,6 +91,9 @@ namespace WSChat.Client
                 case MessageType.SendMessage:
                     SendMessageData(message);
                     break;
+                case MessageType.SendPrivateMessage:
+                    SendMessageData(message);
+                    break;
             }
         }
 
@@ -194,10 +197,6 @@ namespace WSChat.Client
             MessageData msg = new(MessageType.SendPrivateMessage);
             msg.Data = $"{user}##{message}";
             SendMessage(msg);
-
-            MessageData quitResult = GetMessage();
-            if (quitResult == null)
-                HandleError(new Exception("Connection Error"));
         }
     }
 }
