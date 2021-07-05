@@ -1,5 +1,4 @@
 ﻿using System;
-using WSChat.Shared;
 using WSChat.Shared.Helpers;
 
 namespace WSChat.Server

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Net.Sockets;
 using WSChat.Shared.Domain;
 using WSChat.Shared.Helpers;

@@ -12,7 +12,6 @@ namespace WSChat.Server
 {
     class ChatServer : TCPServer
     {
-
         public UserManager UserManager { get; private set; }
         public SessionManager SessionManager { get; private set; }
         public RoomManager RoomManager { get; private set; }
@@ -168,7 +167,7 @@ namespace WSChat.Server
                                 BroadcastToRoom(session, $"joined the chatroom \"{msgData[0]}\"");
                             }
                         }
-                        catch (Exception e)//(ChatroomUnknownException e)
+                        catch (Exception e)
                         {
                             MessageData messageSuccess = new(MessageType.JoinRoom);
                             messageSuccess.Data = $"error##{msgData[0]}\r\nChatroom Exception{e.Message}";
@@ -223,7 +222,7 @@ namespace WSChat.Server
 
                         HandleLog($"Registration success : {nickName}");
                     }
-                    catch (Exception e) //(UserAlreadyExistsException e)
+                    catch (Exception e)
                     {
                         MessageData messageSuccess = new(MessageType.Register);
                         messageSuccess.Data = $"error##{e.Message}";

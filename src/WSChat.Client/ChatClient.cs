@@ -5,7 +5,6 @@ using WSChat.Shared;
 using WSChat.Shared.Base;
 using WSChat.Shared.Domain;
 using WSChat.Shared.Enums;
-using WSChat.Shared.Managers;
 
 namespace WSChat.Client
 {
