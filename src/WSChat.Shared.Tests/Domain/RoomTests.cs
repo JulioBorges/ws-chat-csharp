@@ -24,9 +24,7 @@ namespace WSChat.Shared.Tests.Domain
         [Fact(DisplayName = "When creating a room it should have a empty users list")]
         public void When_Creating_A_Room_It_Should_Have_A_Empty_Users_List()
         {
-            Room room = new("ROOM");
-            Assert.NotNull(room.Users);
-            Assert.Empty(room.Users);
+            
         }
     }
 }

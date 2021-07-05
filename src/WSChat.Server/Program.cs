@@ -1,22 +1,38 @@
 ﻿using System;
-using WSChat.Shared.Domain;
+using WSChat.Shared;
+using WSChat.Shared.Helpers;
 
 namespace WSChat.Server
 {
     class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            Room room = new Room("ROOM");
+            const string title = "CHAT SERVER";
+            (string ip, int port) = ConsoleHelper.LoadOrShowConfigurationMenu(args);
+            ConsoleHelper.PrintHeaderChat(ip, port, title);
 
-            room.SetMessageHandler(Console.WriteLine);
+            ChatServer chatServer = new();
 
-            room.Connect();
+            chatServer.SetLogHandler(log => {
+                Console.WriteLine($"[LOG]: {log}");
+            });
 
-            
-            Console.Read();
+            chatServer.SetErrorHandler(error => {
+                Console.WriteLine($"[ERROR]: {error.Message}");
+                Console.WriteLine();
+            });
 
-            room.Close();
+            chatServer.StartServer(ip, port);
+
+            if (chatServer.Running)
+            {
+                chatServer.StartThreads();
+                Console.Read();
+                chatServer.StopServer();
+            }
+            else
+                Console.WriteLine("Server failure");
         }
     }
 }
