@@ -13,5 +13,14 @@ namespace WSChat.Shared.Tests.Domain
             Assert.NotNull(msg);
             Assert.Equal(Enums.MessageType.SendMessage, msg.Type);
         }
+
+        [Fact(DisplayName = "When setting the data of Message this message should have a valide Data")]
+        public void WhenSettingTheDataOfMessageThisMessageShouldHaveAValideData()
+        {
+            MessageData msg = new(Enums.MessageType.SendMessage);
+            msg.Data = "DATA";
+            Assert.NotNull(msg);
+            Assert.Equal("DATA", msg.Data);
+        }
     }
 }
