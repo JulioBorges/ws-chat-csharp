@@ -104,8 +104,10 @@ namespace WSChat.Server
 
                     BroadcastToRoom(session, $"left the chatroom \"{session.User.ActiveRoom.Name}\"");
 
-                    HandleLog($"{session.User.NickName} left the chatroom: {session.User.ActiveRoom.Name}");
 
+                    HandleLog($"{session.User.NickName} left the chatroom: {session.User.ActiveRoom.Name}");
+                    
+                    _roomManager.RemoveRoom(session.User.ActiveRoom.Name);
                     session.User.SetActiveRoom(null);
                 }
             }
@@ -134,6 +136,7 @@ namespace WSChat.Server
                             if (session.User.ActiveRoom != null)
                                 BroadcastToRoom(session, "left the room \"" + session.User.ActiveRoom.Name + "\"");
 
+                            _userManager.RemoveUser(session.User.NickName);
                             session.Client.Close();
                             _sessionManager.RemoveSession(session.Token);
 

@@ -22,16 +22,6 @@ namespace WSChat.Shared.Managers
             RemoveItem(user);
         }
 
-        public User GetUser(User other)
-        {
-            User user = GetUserByNickName(other.NickName);
-
-            if (user == null)
-                throw new Exception($"User {other.NickName} not exists");
-
-            return user;
-        }
-
         protected override bool ItemExists(User item) =>
             ListData.Any(s => s.NickName == item.NickName);
 

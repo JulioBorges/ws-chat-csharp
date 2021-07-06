@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using WSChat.Shared.Base;
+using WSChat.Shared.Contracts;
 using WSChat.Shared.Domain;
 
 namespace WSChat.Shared.Managers
 {
-    public class RoomManager : BaseManager<Room>
+    public class RoomManager : BaseManager<Room>, IRoomManager
     {
         public IEnumerable<Room> RoomsList => ListData;
 
@@ -22,9 +23,9 @@ namespace WSChat.Shared.Managers
             RemoveItem(room);
         }
 
+        public bool RoomExists(string name) => ListData.Any(r => r.Name == name);
+
         protected override bool ItemExists(Room room) =>
             ListData.Any(r => r.Name == room.Name);
-
-        public bool RoomExists(string name) => ListData.Any(r => r.Name == name);
     }
 }
